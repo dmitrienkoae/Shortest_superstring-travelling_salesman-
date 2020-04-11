@@ -1,4 +1,4 @@
-#include "Sumgraph.cpp"
+#include "SumGraph.cpp"
 #include "OverlapFunc.cpp"
 
 #include <fstream>
@@ -10,16 +10,16 @@ typedef std::list<Lint> LLint;
 
 inline int SubtractFromMatrix(SumGraph & g)
 {
-	// сумма всех вычтенных значений
+	// СЃСѓРјРјР° РІСЃРµС… РІС‹С‡С‚РµРЅРЅС‹С… Р·РЅР°С‡РµРЅРёР№
 	int subtractSum = 0;
-	// массивы с минимальными элементами строк и столбцов
+	// РјР°СЃСЃРёРІС‹ СЃ РјРёРЅРёРјР°Р»СЊРЅС‹РјРё СЌР»РµРјРµРЅС‚Р°РјРё СЃС‚СЂРѕРє Рё СЃС‚РѕР»Р±С†РѕРІ
 	std::vector<int> minRow(g.size_normal(), _inf1), minColumn(g.size_normal(), _inf1);
-	// обход всей матрицы
+	// РѕР±С…РѕРґ РІСЃРµР№ РјР°С‚СЂРёС†С‹
 	for (size_t i = 0; i < g.size_normal(); ++i) {
 		if (g.rows[i])
 			continue;
 		for (size_t j = 0; j < g.size_normal(); ++j) {
-			// поиск минимального элемента в строке
+			// РїРѕРёСЃРє РјРёРЅРёРјР°Р»СЊРЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р° РІ СЃС‚СЂРѕРєРµ
 			if (g.columns[j])
 				continue;
 			if (g.at(i, j) < minRow[i])
@@ -27,22 +27,22 @@ inline int SubtractFromMatrix(SumGraph & g)
 		}
 		if (minRow[i] >= _inf1) continue;
 		for (size_t j = 0; j < g.size_normal(); ++j) {
-			// вычитание минимальных элементов из всех
-			// элементов строки, кроме бесконечностей
+			// РІС‹С‡РёС‚Р°РЅРёРµ РјРёРЅРёРјР°Р»СЊРЅС‹С… СЌР»РµРјРµРЅС‚РѕРІ РёР· РІСЃРµС…
+			// СЌР»РµРјРµРЅС‚РѕРІ СЃС‚СЂРѕРєРё, РєСЂРѕРјРµ Р±РµСЃРєРѕРЅРµС‡РЅРѕСЃС‚РµР№
 			if (g.columns[j])
 				continue;
 			if (g.at(i, j) < _inf1) {
 				g.at(i, j) -= minRow[i];
 			}
-			// поиск минимального элемента в столбце после вычитания строк
+			// РїРѕРёСЃРє РјРёРЅРёРјР°Р»СЊРЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р° РІ СЃС‚РѕР»Р±С†Рµ РїРѕСЃР»Рµ РІС‹С‡РёС‚Р°РЅРёСЏ СЃС‚СЂРѕРє
 			if ((g.at(i, j) < minColumn[j]))
 				//if (g.columns[j]) continue;
 				minColumn[j] = g.at(i, j);
 		}
 	}
 
-	// вычитание минимальных элементов из всех
-	// элементов столбца, кроме бесконечностей
+	// РІС‹С‡РёС‚Р°РЅРёРµ РјРёРЅРёРјР°Р»СЊРЅС‹С… СЌР»РµРјРµРЅС‚РѕРІ РёР· РІСЃРµС…
+	// СЌР»РµРјРµРЅС‚РѕРІ СЃС‚РѕР»Р±С†Р°, РєСЂРѕРјРµ Р±РµСЃРєРѕРЅРµС‡РЅРѕСЃС‚РµР№
 	for (size_t j = 0; j < g.size_normal(); ++j) {
 		if (g.columns[j]) continue;
 		for (size_t i = 0; i < g.size_normal(); ++i) {
@@ -53,7 +53,7 @@ inline int SubtractFromMatrix(SumGraph & g)
 		}
 	}
 
-	// суммирование вычтенных значений
+	// СЃСѓРјРјРёСЂРѕРІР°РЅРёРµ РІС‹С‡С‚РµРЅРЅС‹С… Р·РЅР°С‡РµРЅРёР№
 	for (size_t i = 0; i < g.size_normal(); i++) {
 		if (g.rows[i]) continue;
 		subtractSum += minRow[i];
@@ -68,34 +68,34 @@ inline int SubtractFromMatrix(SumGraph & g)
 inline std::list<std::pair<size_t, size_t>>  FindZeroesCoef(SumGraph g) {
 
 	std::list<std::pair<size_t, size_t>> zeros;
-	// список их коэффициентов
+	// СЃРїРёСЃРѕРє РёС… РєРѕСЌС„С„РёС†РёРµРЅС‚РѕРІ
 	std::list<int> coeffList;
 
-	// максимальный коэффициент
+	// РјР°РєСЃРёРјР°Р»СЊРЅС‹Р№ РєРѕСЌС„С„РёС†РёРµРЅС‚
 	int maxCoeff = 0;
-	// поиск нулевых элементов
+	// РїРѕРёСЃРє РЅСѓР»РµРІС‹С… СЌР»РµРјРµРЅС‚РѕРІ
 	for (size_t i = 0; i < g.size_normal(); ++i) {
 		if (g.rows[i]) continue;
 		for (size_t j = 0; j < g.size_normal(); ++j) {
 			if (g.columns[j]) continue;
-			// если равен нулю
+			// РµСЃР»Рё СЂР°РІРµРЅ РЅСѓР»СЋ
 			if (!g.at(i, j)) {
-				// добавление в список координат
+				// РґРѕР±Р°РІР»РµРЅРёРµ РІ СЃРїРёСЃРѕРє РєРѕРѕСЂРґРёРЅР°С‚
 				zeros.emplace_back(i, j);
-				// расчет коэффициена и добавление в список
+				// СЂР°СЃС‡РµС‚ РєРѕСЌС„С„РёС†РёРµРЅР° Рё РґРѕР±Р°РІР»РµРЅРёРµ РІ СЃРїРёСЃРѕРє
 				coeffList.push_back(g.getCoefficient(i, j));
-				// сравнение с максимальным
+				// СЃСЂР°РІРЅРµРЅРёРµ СЃ РјР°РєСЃРёРјР°Р»СЊРЅС‹Рј
 				maxCoeff = std::max(maxCoeff, coeffList.back());
 			}
 		}
 	}
 
-	{ // область видимости итераторов
+	{ // РѕР±Р»Р°СЃС‚СЊ РІРёРґРёРјРѕСЃС‚Рё РёС‚РµСЂР°С‚РѕСЂРѕРІ
 		auto zIter = zeros.begin();
 		auto cIter = coeffList.begin();
 		while (zIter != zeros.end()) {
 			if (*cIter != maxCoeff) {
-				// если коэффициент не максимальный, удаление элемента из списка
+				// РµСЃР»Рё РєРѕСЌС„С„РёС†РёРµРЅС‚ РЅРµ РјР°РєСЃРёРјР°Р»СЊРЅС‹Р№, СѓРґР°Р»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РёР· СЃРїРёСЃРєР°
 				zIter = zeros.erase(zIter);
 				cIter = coeffList.erase(cIter);
 			}
