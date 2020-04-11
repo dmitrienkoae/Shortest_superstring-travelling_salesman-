@@ -5,19 +5,16 @@
 TEST(Test_superStringCost1, superStringCost) {
 	Vstr v = { "a", "aa", "sdf", "fa", "ahg", "hju", "ut" };
 	EXPECT_EQ(11, superStringCost(v));
-	EXPECT_TRUE(true);
 }
 
 TEST(Test_superStringCost2, superStringCost) {
 	Vstr v = { "a", "aa", "aaa" };
 	EXPECT_EQ(3, superStringCost(v));
-	EXPECT_TRUE(true);
 }
 
 TEST(Test_superStringCost3, superStringCost) {
 	Vstr v = { "cde", "abc", "eab", "fgh", "ghf", "hed"};
 	EXPECT_EQ(11, superStringCost(v));
-	EXPECT_TRUE(true);
 }
 
 
