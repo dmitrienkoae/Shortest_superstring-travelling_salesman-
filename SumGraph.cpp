@@ -1,4 +1,5 @@
 #include "SumGraph.h"
+#include "FSM.cpp"
 
 #include <algorithm>
 #include <ostream>
@@ -39,10 +40,11 @@ inline SumGraph::SumGraph(VVint& vi) {
 inline SumGraph::~SumGraph() {
 }
 
-// Сalculating matrix weights
+///
 inline void SumGraph::overlaps(Vstr& vs) {
 
 	int olap;
+	int olap2;
 	for (size_t i = 0; i < vs.size(); i++) {
 		for (size_t j = 0; j < vs.size(); j++) {
 			if (i == j) continue;
@@ -54,13 +56,18 @@ inline void SumGraph::overlaps(Vstr& vs) {
 	}
 	size_t n = vs.size();
 	this->m = VVint(n, Vint(n));
-	for (size_t i = 0; i < n; ++i)
+	for (size_t i = 0; i < n; ++i) {
+		FSM automat(vs[i]);
 		for (size_t j = 0; j < n; ++j) {
-			olap = overlap(vs[i], vs[j]);
-			m[i][j] = vs[i].length() + vs[j].length() - olap;
-			if (i == j)
-				m[i][j] = _inf1;
+
+			m[i][j] = _inf1;
+			if (i != j) {
+				//olap = overlap(vs[i], vs[j]);
+				olap2 = automat.OverlapStr(vs[j]);
+				m[i][j] = vs[i].length() + vs[j].length() - olap;
+			}
 		}
+	}
 }
 
 inline size_t SumGraph::size() const {
@@ -124,7 +131,7 @@ inline void SumGraph::returnRowColumn(size_t row, size_t column) {
 inline int SumGraph::getCoefficient(size_t r, size_t c) {
 	int rmin, cmin;
 	rmin = cmin = _inf1 * 2;
-	// обход строки и столбца
+	// Г®ГЎГµГ®Г¤ Г±ГІГ°Г®ГЄГЁ ГЁ Г±ГІГ®Г«ГЎГ¶Г 
 	for (size_t i = 0; i < m.size(); ++i) {
 
 		if (i != r) {
@@ -145,9 +152,9 @@ inline int SumGraph::getCoefficient(size_t r, size_t c) {
 }
 
 inline PsPss SumGraph::addInfinity() {
-	// массивы с информацией о том, в каких столбцах и строках содержится бесконечность
+	// Г¬Г Г±Г±ГЁГўГ» Г± ГЁГ­ГґГ®Г°Г¬Г Г¶ГЁГҐГ© Г® ГІГ®Г¬, Гў ГЄГ ГЄГЁГµ Г±ГІГ®Г«ГЎГ¶Г Гµ ГЁ Г±ГІГ°Г®ГЄГ Гµ Г±Г®Г¤ГҐГ°Г¦ГЁГІГ±Гї ГЎГҐГ±ГЄГ®Г­ГҐГ·Г­Г®Г±ГІГј
 	std::vector<bool> infRow(m.size(), false), infColumn(m.size(), false);
-	// обход всей матрицы
+	// Г®ГЎГµГ®Г¤ ГўГ±ГҐГ© Г¬Г ГІГ°ГЁГ¶Г»
 
 	for (size_t i = 0; i < m.size(); i++) {
 		if (rows[i]) continue;
@@ -159,7 +166,7 @@ inline PsPss SumGraph::addInfinity() {
 			}
 		}
 	}
-	// поиск строки, не содержащей бесконечности
+	// ГЇГ®ГЁГ±ГЄ Г±ГІГ°Г®ГЄГЁ, Г­ГҐ Г±Г®Г¤ГҐГ°Г¦Г Г№ГҐГ© ГЎГҐГ±ГЄГ®Г­ГҐГ·Г­Г®Г±ГІГЁ
 	size_t notInf;
 	for (size_t i = 0; i < infRow.size(); i++)
 		if (!infRow[i] && !rows[i]) {
@@ -167,7 +174,7 @@ inline PsPss SumGraph::addInfinity() {
 			break;
 		}
 
-	// поиск столбца, не содаржащего бесконечности и добавление бесконечности
+	// ГЇГ®ГЁГ±ГЄ Г±ГІГ®Г«ГЎГ¶Г , Г­ГҐ Г±Г®Г¤Г Г°Г¦Г Г№ГҐГЈГ® ГЎГҐГ±ГЄГ®Г­ГҐГ·Г­Г®Г±ГІГЁ ГЁ Г¤Г®ГЎГ ГўГ«ГҐГ­ГЁГҐ ГЎГҐГ±ГЄГ®Г­ГҐГ·Г­Г®Г±ГІГЁ
 	for (size_t j = 0; j < infColumn.size(); j++) {
 		if (columns[j]) continue;
 		if (!infColumn[j]) {
