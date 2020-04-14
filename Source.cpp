@@ -9,7 +9,7 @@ int main() {
 	std::vector<std::string> vs ;
 	std::string s;
 	std::string line;
-	std::ifstream in("D:\\tests2.txt"); // окрываем файл для чтения
+	std::ifstream in("D:\\tests2.txt"); // Г®ГЄГ°Г»ГўГ ГҐГ¬ ГґГ Г©Г« Г¤Г«Гї Г·ГІГҐГ­ГЁГї
 	if (in.is_open())
 	{
 		while (getline(in, line))
@@ -19,15 +19,15 @@ int main() {
 	}
 	in.close();
 
-	clock_t start = clock();
+	//clock_t start = clock();
 	SumGraph g(vs);
 	std::string super_str = superString(vs);
-	clock_t end = clock();
+	//clock_t end = clock();
 
 	std::cout << super_str << std::endl;
 
-	double seconds = (double)(end - start) / CLOCKS_PER_SEC;
-	std::cout << "Time : " << seconds << std::endl;
+	//double seconds = (double)(end - start) / CLOCKS_PER_SEC;
+	//std::cout << "Time : " << seconds << std::endl;
 
 	return 0;
 }
