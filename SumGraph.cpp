@@ -40,7 +40,7 @@ inline SumGraph::SumGraph(VVint& vi) {
 inline SumGraph::~SumGraph() {
 }
 
-///
+// Сalculating matrix weights
 inline void SumGraph::overlaps(Vstr& vs) {
 
 	int olap;
@@ -59,9 +59,9 @@ inline void SumGraph::overlaps(Vstr& vs) {
 	for (size_t i = 0; i < n; ++i) {
 		FSM automat(vs[i]);
 		for (size_t j = 0; j < n; ++j) {
-
-			m[i][j] = _inf1;
-			if (i != j) {
+			if (i == j)
+				m[i][j] = _inf1;
+			else {
 				//olap = overlap(vs[i], vs[j]);
 				olap2 = automat.OverlapStr(vs[j]);
 				m[i][j] = vs[i].length() + vs[j].length() - olap2;
@@ -106,6 +106,8 @@ inline int SumGraph::overlap(const std::string& s1, const std::string& s2) {
 	return res;
 }
 
+
+
 //Item Access
 inline int& SumGraph::at(size_t i, size_t j) {
 	return m[i][j];
@@ -131,7 +133,7 @@ inline void SumGraph::returnRowColumn(size_t row, size_t column) {
 inline int SumGraph::getCoefficient(size_t r, size_t c) {
 	int rmin, cmin;
 	rmin = cmin = _inf1 * 2;
-	// îáõîä ñòðîêè è ñòîëáöà
+	// обход строки и столбца
 	for (size_t i = 0; i < m.size(); ++i) {
 
 		if (i != r) {
@@ -152,9 +154,9 @@ inline int SumGraph::getCoefficient(size_t r, size_t c) {
 }
 
 inline PsPss SumGraph::addInfinity() {
-	// ìàññèâû ñ èíôîðìàöèåé î òîì, â êàêèõ ñòîëáöàõ è ñòðîêàõ ñîäåðæèòñÿ áåñêîíå÷íîñòü
+	// массивы с информацией о том, в каких столбцах и строках содержится бесконечность
 	std::vector<bool> infRow(m.size(), false), infColumn(m.size(), false);
-	// îáõîä âñåé ìàòðèöû
+	// обход всей матрицы
 
 	for (size_t i = 0; i < m.size(); i++) {
 		if (rows[i]) continue;
@@ -166,7 +168,7 @@ inline PsPss SumGraph::addInfinity() {
 			}
 		}
 	}
-	// ïîèñê ñòðîêè, íå ñîäåðæàùåé áåñêîíå÷íîñòè
+	// поиск строки, не содержащей бесконечности
 	size_t notInf;
 	for (size_t i = 0; i < infRow.size(); i++)
 		if (!infRow[i] && !rows[i]) {
@@ -174,7 +176,7 @@ inline PsPss SumGraph::addInfinity() {
 			break;
 		}
 
-	// ïîèñê ñòîëáöà, íå ñîäàðæàùåãî áåñêîíå÷íîñòè è äîáàâëåíèå áåñêîíå÷íîñòè
+	// поиск столбца, не содаржащего бесконечности и добавление бесконечности
 	for (size_t j = 0; j < infColumn.size(); j++) {
 		if (columns[j]) continue;
 		if (!infColumn[j]) {
@@ -213,3 +215,4 @@ inline std::ostream& operator<<(std::ostream& out, const VVint& m) {
 	out << "\n--------------------------\n";
 	return out;
 }
+
