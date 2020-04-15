@@ -64,7 +64,7 @@ inline void SumGraph::overlaps(Vstr& vs) {
 			if (i != j) {
 				//olap = overlap(vs[i], vs[j]);
 				olap2 = automat.OverlapStr(vs[j]);
-				m[i][j] = vs[i].length() + vs[j].length() - olap;
+				m[i][j] = vs[i].length() + vs[j].length() - olap2;
 			}
 		}
 	}
