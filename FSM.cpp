@@ -15,6 +15,7 @@ inline FSM::FSM(std::string word)
 		s.fin = false;
 		states.push_back(s);
 	}
+
 	for (int i = 0; i <= wlen; i++) { //Constructing states
 		state cur_st;
 		cur_st.fin = false;
@@ -82,6 +83,7 @@ inline int FSM::OverlapStr(std::string str)
 	if (str.size() > word.size())
 		str = str.substr(0, word.size());
 	state *cur_st = &states[0];
+	state *cur_prev = &states[0];
 	int str_size = str.size();
 	int overlap_beg = -1;
 	int overlap_end = -1;
@@ -91,11 +93,17 @@ inline int FSM::OverlapStr(std::string str)
 
 	for (int i = 0; i < str_size; i++) {
 		if (str_rev[i] >= 0) { //escaping negative chars (many of them are in non-text files)
+			cur_prev = cur_st;
 			cur_st = cur_st->p[str_rev[i]];
+
 		}
 		else {
 			cur_st = &states[0];
 		}
+
+		if (cur_st == cur_prev && cur_prev == &states[1])
+			return 1;
+
 		if (cur_st->fin == true) {
 			if (first) {
 				overlap_beg = i;
@@ -123,7 +131,9 @@ inline int FSM::OverlapStr(std::string str)
 	return overlap;
 }
 
+
 inline FSM::~FSM()
 {
 }
+
 
