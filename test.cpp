@@ -1,10 +1,10 @@
-#include "pch.h"
-//#include "gtest/gtest.h"
-#include "../traveling_salesman/Source.cpp"
+
+#include "gtest/gtest.h"
+#include "../travelling_salesman/Superstring.cpp"
 
 TEST(Test_superStringCost1, superString) {
 	Vstr v = { "a", "aa", "sdf", "fa", "ahg", "hju", "ut" };
-  	vector::string super_str = superString(v);
+  	std::string super_str = superString(v);
  	bool b = true;
  	for (auto i : v){
    	if( super_str.find(i) == string::npos)
@@ -17,7 +17,7 @@ TEST(Test_superStringCost2, superString) {
 	Vstr v = { "a", "aa", "aaa" };
 	EXPECT_EQ(3, superStringCost(v));
 	Vstr v = { "a", "aa", "aaa" };
-	vector::string super_str = superString(v);
+	std::string super_str = superString(v);
  	bool b = true;
   	for (auto i : v){
     	if( super_str.find(i) == string::npos)
@@ -28,7 +28,7 @@ TEST(Test_superStringCost2, superString) {
 
 TEST(Test_superStringCost3, superString) {
 	Vstr v = { "cde", "abc", "eab", "fgh", "ghf", "hed"};
-	vector::string super_str = superString(v);
+	std::string super_str = superString(v);
   	bool b = true;
   	for (auto i : v){
    	if( super_str.find(i) == string::npos)
