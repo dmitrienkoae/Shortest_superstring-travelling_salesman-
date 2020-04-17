@@ -110,5 +110,3 @@ inline std::list<std::pair<size_t, size_t>>  FindZeroesCoef(SumGraph g) {
 
 }
 
-
-
