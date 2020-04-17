@@ -59,10 +59,10 @@ inline void SumGraph::overlaps(Vstr& vs) {
 	for (size_t i = 0; i < n; ++i) {
 		FSM automat(vs[i]);
 		for (size_t j = 0; j < n; ++j) {
-			if (i == j)
-				m[i][j] = _inf1;
-			else {
-				//olap = overlap(vs[i], vs[j]);
+
+			m[i][j] = _inf1;
+			if (i != j) {
+				olap = overlap(vs[i], vs[j]);
 				olap2 = automat.OverlapStr(vs[j]);
 				m[i][j] = vs[i].length() + vs[j].length() - olap2;
 			}
