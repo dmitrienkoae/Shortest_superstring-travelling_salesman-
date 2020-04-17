@@ -22,7 +22,4 @@ FindPath.o: FindPath.cpp
         g++ -c FindPath.cpp
 
 clean:
-        rm -rf *.o superstring2
-~                                                                                                                                                                                                           
-~                                                                                                                                                                                                           
-~                               
+        rm -rf *.o superstring2                          
