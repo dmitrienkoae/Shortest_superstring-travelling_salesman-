@@ -15,6 +15,15 @@ inline FSM::FSM(std::string word)
 		s.fin = false;
 		states.push_back(s);
 	}
+	/*
+	for (int i = 0; i <= wlen; i++) { //Nulling arrows and finaling bool
+		for (int j = 0; j < 128; j++) {
+			states[i].p[j] = &states[0];
+		}
+
+		//states[i].fin = false;
+	}
+	*/
 
 	for (int i = 0; i <= wlen; i++) { //Constructing states
 		state cur_st;
